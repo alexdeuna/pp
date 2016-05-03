@@ -1,0 +1,97 @@
+#popup_container {
+    font-family: Arial, sans-serif;
+    font-size: 12px;
+    min-width: 300px; /* Dialog will be no smaller than this */
+    max-width: 600px; /* Dialog will wrap after this width */
+    background: #FFF;
+    border: solid 2px #999;
+    color: #000;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
+
+
+    box-shadow: 5px 5px 10px #555;
+    -webkit-box-shadow: 5px 5px 10px #555;
+    -moz-box-shadow: 5px 5px 10px #555;
+}
+
+#popup_title {
+    font-size: 14px;
+    font-weight: bold;
+    text-align: center;
+    line-height: 1.75em;
+    color: #666;
+    background: #CCC url(../images/title.gif) top repeat-x;
+    border: solid 1px #FFF;
+    border-bottom: solid 1px #999;
+    cursor: default;
+    padding: 0em;
+    margin: 0em;
+}
+
+#popup_content {
+    background: 16px 16px no-repeat url(../images/info.gif);
+    padding: 1em 1.75em;
+    margin: 0em;
+}
+
+#popup_content.alert {
+    background-image: url(../images/info.gif);
+    font-weight:bold;
+    text-align: center;
+}
+
+#popup_content.confirm {
+    background-image: url(../images/important.gif);
+    color: #f00; 
+    font-weight:bold;
+    text-align: center;
+}
+
+#popup_content.prompt {
+    background-image: url(../images/help.gif);
+}
+
+#popup_message {
+    padding-left: 48px;
+}
+
+#popup_panel {
+    text-align: center;
+    margin: 1em 0em 0em 1em;
+}
+
+#popup_prompt {
+    margin: .5em 0em;
+}
+
+#popup_ok, #popup_cancel {
+    display: inline-block;
+    padding: 6px 12px;
+    margin-bottom: 0;
+    font-size: 14px;
+    font-weight: normal;
+    line-height: 1.42857143;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    -ms-touch-action: manipulation;
+    touch-action: manipulation;
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    background-image: none;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    color: #333;
+    background-color: #fff;
+    border-color: #ccc;
+}
+#popup_ok:hover, #popup_cancel:hover {
+    color: #333;
+    background-color: #e6e6e6;
+    border-color: #adadad;
+}

@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8"/>
+        <title>Exemplo de gráfico</title>
+
+        <!-- Carregar a API do google -->
+        <script type="text/javascript" src="jsapi"></script>
+
+        <!-- Preparar a geracao do grafico -->
+        <script type="php">
+
+            // Carregar a API de visualizacao e os pacotes necessarios.
+            google.load('visualization', '1.0', {'packages': ['corechart']});
+
+            // Especificar um callback para ser executado quando a API for carregada.
+            google.setOnLoadCallback(desenharGrafico);
+            google.setOnLoadCallback(desenharGrafico2);
+
+            /**
+             * Funcao que preenche os dados do grafico
+             */
+            function desenharGrafico() {
+                // Montar os dados usados pelo grafico
+                var dados = new google.visualization.DataTable();
+                dados.addColumn('string', 'Gênero');
+                dados.addColumn('number', 'Quantidades');
+                dados.addRows([
+                    ['Masculino', 14],
+                    ['Feminino', 20]
+                ]);
+                var dados = google.visualization.arrayToDataTable([
+                    ['Element', 'Density', {role: 'style'}],
+                    ['Copper', 8.94, '#b87333', ],
+                    ['Silver', 10.49, 'silver'],
+                    ['Gold', 19.30, 'gold'],
+                    ['Platinum', 21.45, 'color: #e5e4e2']
+                ]);
+
+                // Configuracoes do grafico
+                var config = {
+                    'title': 'Quantidade de alunos por gênero',
+                    'width': 500,
+                    'height': 300,
+                    bar: {groupWidth: '50%'},
+                };
+
+                // Instanciar o objeto de geracao de graficos de pizza,
+                // informando o elemento HTML onde o grafico sera desenhado.
+                var chart = new google.visualization.ColumnChart(document.getElementById('area_grafico'));
+
+//                google.visualization.events.addListener(chart, 'ready', function() {
+//                    area_grafico.innerHTML = '<img src="' + chart.getImageURI() + '">';
+//                });
+
+
+                // Desenhar o grafico (usando os dados e as configuracoes criadas)
+                chart.draw(dados, config);
+            }
+
+            function desenharGrafico2() {
+                // Montar os dados usados pelo grafico
+                var dados = new google.visualization.DataTable();
+                dados.addColumn('string', 'Gênero');
+                dados.addColumn('number', 'Quantidades');
+                dados.addRows([
+                    ['Masculino', 1443],
+                    ['Feminino', 2020]
+                ]);
+
+                // Configuracoes do grafico
+                var config = {
+                    'title': 'Quantidade de alunos por gênero',
+                    'width': 400,
+                    'height': 300,
+                    colors: ['#e0440e', '#e6693e', '#ec8f6e', '#f3b49f', '#f6c7b6'],
+//                    is3D: true,
+                    pieHole: 0.4,
+                    pieStartAngle: 10,
+                    sliceVisibilityThreshold: .2
+
+                };
+
+                // Instanciar o objeto de geracao de graficos de pizza,
+                // informando o elemento HTML onde o grafico sera desenhado.
+                var chart = new google.visualization.PieChart(document.getElementById('area_grafico2'));
+
+                // Desenhar o grafico (usando os dados e as configuracoes criadas)
+                chart.draw(dados, config);
+            }
+
+            google.setOnLoadCallback(function() {
+                var json_text = $.ajax({url: "getDadosGrafico.php", dataType: "json", async: false}).responseText;
+                var json = eval("(" + json_text + ")");
+                var dados = new google.visualization.DataTable(json.dados);
+
+                var chart = new google.visualization.PieChart(document.getElementById('area_grafico3'));
+                chart.draw(dados, json.config);
+            });
+        </script>
+    </head>
+
+    <body>
+        <div id="area_grafico"></div>
+        <div id="area_grafico2"></div>
+        <div id="area_grafico3"></div>
+    </body>
+</html>
