@@ -27,6 +27,23 @@ $(document).ready(function() {
         $("span[class='input-group-addon']").css({"background-color": back, "color": font, "border-color": border});
         $('blockquote').css("border-left-color", back);
     }
+    function totalPagar() {
+        $pagar = 0;
+        $a = "<table class='table table-hover table-striped table-bordered' style='margin-top: 10px'><thead><tr><th>Material</th><th>Peso</th><th>Valor/KG </th><th>Valor Pago</th></tr></thead><tbody>";
+        $('.vale').each(function(index, value) {
+            $a += "<tr><td>" + $(this).find('td.material_apagar').text() + "</td><td>" + $(this).find('td.peso_apagar').text() + "</td><td>" + $(this).find('td.valor_apagar').text() + "</td><td>" + $(this).find('td.pago_apagar').text() + "</td></tr>";
+            $pagar =  $pagar + parseFloat($(this).find('td.pago_apagar').text().substr(3));
+        });
+        $a += "<tr style='background-color: #fdd'><td colspan='4'>" + $pagar.toFixed(2) + "</td></tr></tbody></table>";
+        jAlert($a, 'Total a Pagar');
+        $("#popup_ok").click(function() {
+            $(".vale").removeClass('vale');
+            $(".material_apagar").removeClass('material_apagar');
+            $(".peso_apagar").removeClass('peso_apagar');
+            $(".valor_apagar").removeClass('valor_apagar');
+            $(".pago_apagar").removeClass('pago_apagar');
+        })
+    }
     function excluirEntrada() {
         $(".excluir_entrada").on("click", (function() {
 //            alert($(this).attr('id'));
@@ -131,6 +148,7 @@ $(document).ready(function() {
                                     success: function(data, textStatus, jqXHR) {
                                         $("tr").attr('style', '');
                                         $("tbody").prepend(data);
+                                        totalPagar(data);
                                         excluirEntrada();
                                     }
                                 });

@@ -35,17 +35,18 @@ if ($_POST['acao'] == 'entrada1') {
     echo"</select></div></div></div><div class='container_entrada'></div></form>";
 } else if ($_POST['acao'] == 'entrada2') {
     $entrada = new Entrada();
-    $sql = "select e.id, e.dt, c.nome as cliente, e.peso, m.nome as material from entrada e, cliente c, material m 
-                where e.id_cli = c.id 
+    $sql = "select e.id, e.dt, c.nome as cliente, e.peso, e.valor,  m.nome as material from entrada e, cliente c, material m 
+                where  e.id_cli = c.id 
                 and e.id_mat = m.id
-                and e.dt > '$hoje'
-                order by e.id desc";
+                and SUBSTR(e.dt ,1,10) = SUBSTR(now() ,1,10)
+                order by  m.nome";
     $entrada->selecionaLivre($sql);
     $saida = "<table class='table table-hover table-striped table-bordered' style='margin-top: 10px'><thead>
-         <tr><th>Data</th><th>Cliente</th><th>Material</th><th>Peso</th><th></th></tr>
+         <tr><th>Data</th><th>Cliente</th><th>Material</th><th>Peso</th><th>Valor/KG </th><th>Valor Pago</th><th></th></tr>
          </thead><tbody>";
     while ($e = $entrada->retornaDados()) {
-        $saida .= "<tr><td>$e->dt</td><td>$e->cliente</td><td>$e->material</td><td>$e->peso kg</td><td><div class='text-center'><button type='button' class='btn btn-danger btn-xs excluir_entrada' id='$e->id'>excluir</button></div></td></tr>";
+        $pago = $e->peso * $e->valor;
+        $saida .= "<tr><td>$e->dt</td><td>$e->cliente</td><td>$e->material</td><td>$e->peso kg</td><td>R$ $e->valor</td><td>R$ " . round($pago, 2) . "</td><td><div class='text-center'><button type='button' class='btn btn-danger btn-xs excluir_entrada' id='$e->id'>excluir</button></div></td></tr>";
     }
     $saida .= "</tbody></table>";
     if ($_POST['idCliente']) {
@@ -98,14 +99,15 @@ if ($_POST['acao'] == 'entrada1') {
     }
     if ($vazio) {
         $entrada = new Entrada();
-        $sql = "select e.id, e.dt, c.nome as cliente, e.peso, m.nome as material from entrada e, cliente c, material m 
+        $sql = "select e.id, e.dt, c.nome as cliente, e.peso, e.valor, m.nome as material from entrada e, cliente c, material m 
                 where  e.id_cli = c.id 
                 and e.id_mat = m.id
                 and e.dt in (select max(dt) from entrada)
                 order by  m.nome";
         $entrada->selecionaLivre($sql);
         while ($e = $entrada->retornaDados()) {
-            echo "<tr style='background-color: #fdd'><td>$e->dt</td><td>$e->cliente</td><td>$e->material</td><td>$e->peso kg</td><td><div class='text-center'><button type='button' class='btn btn-danger btn-xs excluir_entrada' id='$e->id'>excluir</button></div></td></tr>";
+            $pago = $e->peso * $e->valor;
+            echo "<tr style='background-color: #fdd' class='vale'><td>$e->dt</td><td>$e->cliente</td><td class='material_apagar'>$e->material</td><td class='peso_apagar'>$e->peso kg</td><td class='valor_apagar'>R$ $e->valor</td><td class='pago_apagar'>R$ " . round($pago, 2) . "</td><td><div class='text-center'><button type='button' class='btn btn-danger btn-xs excluir_entrada' id='$e->id'>excluir</button></div></td></tr>";
         }
     } else {
         echo "Preencha pelo menos um campo!";
@@ -115,7 +117,6 @@ if ($_POST['acao'] == 'entrada1') {
     $entrada->valor_pk = $_POST['id'];
     $entrada->deletar($entrada);
 //    echo $_POST['id'];
-
 // CLIENTE ##################################################################################################
 } else if ($_POST['acao'] == "novo_cliente") {
     echo "<form  class='form-horizontal' name='fnova_tabela' id='entrada_form' action='' method='POST' role='form'>
