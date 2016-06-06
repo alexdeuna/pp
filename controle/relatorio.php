@@ -274,7 +274,7 @@ if ($_POST['acao'] == 'btn_por_entrada') {
     $saida .= "</tbody></table></DIV>";
 
     $saida .= "</div>"; //FECHA A DIV ROW
-    $saida .= "<img src='grafico.php?data=" . $_POST['data'] . "&acao=G1' / >";
+//    $saida .= "<img src='grafico.php?data=" . $_POST['data'] . "&acao=G1' / >";
 } else if ($_POST['acao'] == 'outros') {
     
 }
